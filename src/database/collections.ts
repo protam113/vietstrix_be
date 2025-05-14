@@ -13,4 +13,5 @@ export const COLLECTION_KEYS = {
   SEO: process.env.SEO_COLLECTION || 'seos',
   PROJECT: process.env.PROJECT_COLLECTION || 'projects',
   TRACKING: process.env.TRACKING_COLLECTION || 'tracking',
+  PRODUCT: process.env.PRODUCT_COLLECTION || 'products',
 };

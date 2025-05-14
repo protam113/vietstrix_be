@@ -1,5 +1,5 @@
 export const appConfig = () => ({
-  name: process.env.APP_NAME || 'MyApp',
+  name: process.env.APP_NAME || 'Unien_BE',
   host: process.env.APP_HOST || 'localhost',
   port: parseInt(process.env.APP_PORT || '8080'),
   secret: process.env.APP_SECRET || 'secret',

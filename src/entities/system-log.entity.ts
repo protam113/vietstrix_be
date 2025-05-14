@@ -13,6 +13,16 @@ export enum SystemLogType {
   // Contact
   DeletedContact = 'DELETED_CONTACT',
 
+  // Faq
+  FaqCreated = 'FAQ_CREATED',
+  FaqUpdated = 'FAQ_UPDATED',
+  FaqDeleted = 'FAQ_DELETED',
+
+  // Pricing
+  PricingDeleted = 'PRICING_DELETED',
+  PricingUpdated = 'PRICING_UPDATED',
+  PricingCreated = 'PRICING_CREATED',
+
   // Blog
   BlogCreated = 'BLOG_CREATED',
   BlogUpdated = 'BLOG_UPDATED',
@@ -43,7 +53,8 @@ export enum Status {
 }
 
 @Schema() // tương đương CreateDateColumn
-export class SystemLog extends Base {
+export class SystemLog extends Base {ng;
+
   @Prop({ enum: SystemLogType, required: true })
   type: SystemLogType;
 

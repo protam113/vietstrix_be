@@ -1,0 +1,7 @@
+backup
+db
+logs
+*.md
+*.log
+node_modules
+.env

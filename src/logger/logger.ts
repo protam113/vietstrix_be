@@ -1,6 +1,6 @@
 // logger/logger.ts
 import { createLogger, format, transports } from 'winston';
-import 'winston-daily-rotate-file';
+import DailyRotateFile = require('winston-daily-rotate-file');
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -17,7 +17,7 @@ export const logger = createLogger({
   format: format.combine(format.timestamp(), logFormat),
   transports: [
     new transports.Console(),
-    new transports.DailyRotateFile({
+    new DailyRotateFile({
       filename: path.join(logDir, 'access-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       maxFiles: '14d', // giữ log 14 ngày

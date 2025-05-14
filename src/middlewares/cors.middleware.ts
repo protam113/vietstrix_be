@@ -8,18 +8,15 @@ export class CorsMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    this.logger.log(`Incoming request from origin: ${req.headers.origin}`); // 👈 thêm dòng này
-
     const allowedOrigins = this.configService
       .get<string>('ALLOWED_ORIGINS')
       ?.split(',') || ['http://localhost:3000'];
     const origin = req.headers.origin;
 
-    if (origin && allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-      this.logger.log(`CORS enabled for origin: ${origin}`);
-    }
+    this.logger.log(`Request origin: ${origin}`);
+    this.logger.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
 
+    // Set common headers
     res.setHeader(
       'Access-Control-Allow-Methods',
       'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -29,6 +26,13 @@ export class CorsMiddleware implements NestMiddleware {
       'Content-Type, Accept, Authorization, X-API-KEY, api-key',
     );
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    // Set CORS Origin
+    if (process.env.NODE_ENV !== 'production') {
+      res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    } else if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
 
     if (req.method === 'OPTIONS') {
       this.logger.log('CORS preflight request handled');

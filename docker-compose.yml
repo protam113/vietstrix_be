@@ -1,0 +1,90 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: vietstrix_mongo
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Hoang2003
+      MONGODB_INITDB_DATABASE: vietstrix_db
+    ports:
+      - '${DB_PORT}:27017'
+    volumes:
+      - ./addons/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - vietstrix_mongo_prod:/data/db
+      - ../backup:/backup
+    networks:
+      - vietstrix_network
+    command: mongod --bind_ip_all
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: '3g'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: app
+    container_name: vietstrix_app
+
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - logs:/home/node/app/logs
+      - ./src:/home/node/app/src
+      - ./uploads:/home/node/app/uploads
+    command: yarn start:prod
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - vietstrix_network
+    deploy:
+      resources:
+        limits:
+          memory: '2g'
+
+  redis:
+    image: redis:latest
+    container_name: vietstrix_redis
+    command: ['redis-server', '--requirepass', 'Hoang2003']
+    env_file: .env
+    ports:
+      - '6380:6379'
+    volumes:
+      - cache:/data/cache
+    networks:
+      - vietstrix_network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: '200m'
+
+volumes:
+  vietstrix_mongo_prod:
+    driver: local
+  backup:
+    driver: local
+  cache:
+    driver: local
+  logs:
+    driver: local
+
+networks:
+  vietstrix_network:
+    driver: bridge
