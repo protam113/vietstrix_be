@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 import { Base } from './base.entity';
 import { COLLECTION_KEYS } from 'src/database/collections';
 import { FaqStatus } from 'src/modules/faq/faq.constant';

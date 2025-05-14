@@ -1,5 +1,4 @@
 import { Base } from './base.entity';
-import { v4 as uuidv4 } from 'uuid';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { COLLECTION_KEYS } from 'src/database/collections';
@@ -33,6 +32,9 @@ export class ProjectEntity extends Base {
   description: string;
 
   @Prop({ required: true })
+  link?: string;
+
+  @Prop({ required: true })
   brand_name: string;
 
   @Prop({ required: true })
@@ -46,6 +48,8 @@ export class ProjectEntity extends Base {
 
   @Prop({ default: 0 })
   views: number;
+
+  
 
   @Prop({ enum: Status, default: Status.Draft })
   status: string;

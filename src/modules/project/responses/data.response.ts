@@ -18,6 +18,7 @@ export interface DataResponse {
   service: Service[];
   brand_name: string;
   testimonial: string;
+  link: string;
   user: User;
   views: number;
   client: string;

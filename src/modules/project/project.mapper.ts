@@ -19,6 +19,7 @@ export function toDataResponse(
     })),
     user: project.user ?? {},
     brand_name: project.brand_name ?? '',
+    link: project.link ?? '',
     views: project.views ?? 0,
     client: project.client ?? '',
     testimonial: project.testimonial ?? '',
